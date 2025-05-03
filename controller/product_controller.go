@@ -51,3 +51,13 @@ func (p *ProductController) Create(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, product)
 }
+
+func (p *ProductController) DeleteById(c *gin.Context) {
+	id := c.Param("id")
+	product, err := p.productUseCase.DeleteById(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, product)
+}
