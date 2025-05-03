@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: go-products-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: products
+    ports:
+      - "5432:5432"
+    networks:
+      - go-products
+
+networks:
+  go-products:
+    driver: bridge

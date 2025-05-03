@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"fmt"
+
 	"github.com/Marcus-Nastasi/go-products-api/model"
 	"github.com/Marcus-Nastasi/go-products-api/repository"
 )
@@ -16,5 +18,10 @@ func NewProductUseCase(repository repository.ProductRepository) ProductUseCase {
 }
 
 func (pu *ProductUseCase) GetProducts() ([]model.Product, error) {
-	return []model.Product{}, nil
+	products, err := pu.repository.GetProducts()
+	if err != nil {
+		fmt.Println(err)
+		return []model.Product{}, nil
+	}
+	return products, nil
 }
