@@ -34,10 +34,10 @@ func (p *ProductController) Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
-	id, err := p.productUseCase.Create(new_product)
+	product, err := p.productUseCase.Create(new_product)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, map[string]int{"product": id})
+	c.JSON(http.StatusCreated, product)
 }

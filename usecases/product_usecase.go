@@ -26,10 +26,10 @@ func (pu *ProductUseCase) GetProducts() ([]model.Product, error) {
 	return products, nil
 }
 
-func (pu *ProductUseCase) Create(new_product model.Product) (int, error) {
-	id, err := pu.repository.Create(new_product)
+func (pu *ProductUseCase) Create(new_product model.Product) (model.Product, error) {
+	product, err := pu.repository.Create(new_product)
 	if err != nil {
-		return 0, err
+		return model.Product{}, err
 	}
-	return id, nil
+	return product, nil
 }
