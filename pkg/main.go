@@ -2,6 +2,9 @@ package main
 
 import (
 	"github.com/Marcus-Nastasi/go-products-api/controller"
+	"github.com/Marcus-Nastasi/go-products-api/db"
+	"github.com/Marcus-Nastasi/go-products-api/repository"
+	"github.com/Marcus-Nastasi/go-products-api/routes"
 	"github.com/Marcus-Nastasi/go-products-api/usecases"
 	"github.com/gin-gonic/gin"
 )
@@ -9,13 +12,15 @@ import (
 func main() {
 	server := gin.Default()
 
-	productUsecase := usecases.NewProductUseCase()
-	ctr := controller.NewProductController(productUsecase)
+	db, dbErr := db.ConnectDb()
+	if dbErr != nil {
+		panic("Error on database " + dbErr.Error())
+	}
+	productRepo := repository.NewProductRepository(db)
+	productUsecase := usecases.NewProductUseCase(productRepo)
+	productController := controller.NewProductController(productUsecase)
 
-	server.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, map[string]string{"status": "pong"})
-	})
-	server.GET("/products", ctr.GetProducts)
+	routes.Setup(server, productController)
 
 	server.Run(":8000")
 }
