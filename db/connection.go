@@ -3,6 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -10,19 +12,23 @@ const (
 	port   = "5432"
 	user   = "postgres"
 	pass   = "123"
-	dbname = "postgres"
+	dbname = "products"
 )
 
 func ConnectDb() (*sql.DB, error) {
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s pass=%s dbname= %s", host, port, user, pass, dbname)
+	psqlInfo := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname= %s sslmode=disable",
+		host, port, user, pass, dbname,
+	)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		panic("error connecting to db")
+		panic("error connecting to db " + err.Error())
 	}
 	err = db.Ping()
 	if err != nil {
-		panic("error pinging on db")
+		panic("error pinging on db " + err.Error())
 	}
-	fmt.Println("Connected to " + dbname)
+	fmt.Println("Database: connected to " + dbname)
+	fmt.Println()
 	return db, nil
 }

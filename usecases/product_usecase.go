@@ -21,7 +21,7 @@ func (pu *ProductUseCase) GetProducts() ([]model.Product, error) {
 	products, err := pu.repository.GetProducts()
 	if err != nil {
 		fmt.Println(err)
-		return []model.Product{}, nil
+		return []model.Product{}, err
 	}
 	return products, nil
 }
