@@ -20,7 +20,7 @@ func main() {
 		panic("Error on database " + dbErr.Error())
 	}
 
-	// Executa a automigração das tabelas
+	// Execute tables automigration
 	err := db.AutoMigrate(&model.Product{})
 	if err != nil {
 		log.Fatal("Error on automigration: ", err)

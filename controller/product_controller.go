@@ -27,6 +27,16 @@ func (p *ProductController) GetProducts(c *gin.Context) {
 	c.JSON(http.StatusOK, products)
 }
 
+func (p *ProductController) GetProduct(c *gin.Context) {
+	id := c.Param("id")
+	products, err := p.productUseCase.GetProduct(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, products)
+}
+
 func (p *ProductController) Create(c *gin.Context) {
 	var new_product model.Product
 	err := c.BindJSON(&new_product)

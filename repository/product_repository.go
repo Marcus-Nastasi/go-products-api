@@ -23,6 +23,14 @@ func (r *ProductRepository) GetProducts() ([]model.Product, error) {
 	return products, nil
 }
 
+func (r *ProductRepository) GetProduct(id string) (model.Product, error) {
+	var product model.Product
+	if err := r.db.First(&product, id).Error; err != nil {
+		return model.Product{}, err
+	}
+	return product, nil
+}
+
 func (r *ProductRepository) Create(product model.Product) (model.Product, error) {
 	if err := r.db.Create(&product).Error; err != nil {
 		return model.Product{}, err
