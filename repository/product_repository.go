@@ -18,7 +18,7 @@ func NewProductRepository(db *sql.DB) ProductRepository {
 }
 
 func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
-	rows, err := pr.connection.Query("SELECT p.* FROM products;")
+	rows, err := pr.connection.Query("SELECT p.* FROM products p;")
 	if err != nil {
 		fmt.Println("Error getting data " + err.Error())
 		return []model.Product{}, nil
@@ -39,4 +39,18 @@ func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
 	}
 	rows.Close()
 	return productsList, nil
+}
+
+func (pr *ProductRepository) Create(new_product model.Product) (int, error) {
+	var id int
+	rows, err := pr.connection.Prepare("INSERT INTO products (name, price) VALUES ($1, $2) RETURNING id;")
+	if err != nil {
+		return 0, err
+	}
+	err = rows.QueryRow(new_product.Name, new_product.Price).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	rows.Close()
+	return id, nil
 }
