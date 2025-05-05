@@ -38,6 +38,17 @@ func (r *ProductRepository) Create(product model.Product) (model.Product, error)
 	return product, nil
 }
 
+func (r *ProductRepository) UpdateProduct(id string, product model.Product) (model.Product, error) {
+	product, err := r.GetProduct(id)
+	if err != nil {
+		return model.Product{}, err
+	}
+	if err := r.db.Update(id, &product).Error; err != nil {
+		return model.Product{}, err
+	}
+	return product, nil
+}
+
 func (r *ProductRepository) DeleteById(id string) (model.Product, error) {
 	product, err := r.GetProduct(id)
 	if err != nil {

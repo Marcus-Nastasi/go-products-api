@@ -52,6 +52,22 @@ func (p *ProductController) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, product)
 }
 
+func (pc *ProductController) UpdateProduct(c *gin.Context) {
+	id := c.Param("id")
+	var updated model.Product
+	err := c.BindJSON(&updated)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	product, err := pc.productUseCase.UpdateProduct(id, updated)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+	c.JSON(http.StatusOK, product)
+}
+
 func (p *ProductController) DeleteById(c *gin.Context) {
 	id := c.Param("id")
 	product, err := p.productUseCase.DeleteById(id)

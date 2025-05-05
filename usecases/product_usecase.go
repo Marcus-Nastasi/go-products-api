@@ -43,6 +43,14 @@ func (pu *ProductUseCase) Create(new_product model.Product) (model.Product, erro
 	return product, nil
 }
 
+func (pu *ProductUseCase) UpdateProduct(id string, product model.Product) (model.Product, error) {
+	product, err := pu.repository.UpdateProduct(id, product)
+	if err != nil {
+		return model.Product{}, err
+	}
+	return product, nil
+}
+
 func (pu *ProductUseCase) DeleteById(id string) (model.Product, error) {
 	product, err := pu.repository.DeleteById(id)
 	if err != nil {
