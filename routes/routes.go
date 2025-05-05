@@ -13,8 +13,9 @@ func Setup(router *gin.Engine, controller controller.ProductController) {
 	products := router.Group("/products")
 	{
 		products.GET("", controller.GetProducts)
-		products.GET("/:id", controller.GetProduct)
 		products.POST("", controller.Create)
+		products.GET("/:id", controller.GetProduct)
+		products.PATCH("/:id", controller.UpdateProduct)
 		products.DELETE("/:id", controller.DeleteById)
 	}
 }
